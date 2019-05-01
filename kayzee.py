@@ -1,3 +1,4 @@
+import os
 import arcade
 from player import Player, get_distance_between_sprites
 
@@ -23,10 +24,21 @@ BOTTOM_VIEWPORT_MARGIN = 150
 PLAYER_START_X = 128
 PLAYER_START_Y = 128
 
+BULLET_SPEED = 8
+BULLET_SCALE = 0.8
+
+FACE_RIGHT = 1
+FACE_LEFT = 2
+FACE_UP = 3
+FACE_DOWN = 4
+
 
 class MyGame(arcade.Window):
     def __init__(self):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+
+        file_path = os.path.dirname(os.path.abspath(__file__))
+        os.chdir(file_path)
 
         self.coin_list = None
         self.wall_list = None
@@ -34,6 +46,7 @@ class MyGame(arcade.Window):
         self.background_list = None
         self.dont_touch_list = None
         self.player_list = None
+        self.bullet_list = None
 
         self.player = None
         self.physics_engine = None
@@ -50,6 +63,8 @@ class MyGame(arcade.Window):
         self.collect_coin_sound = arcade.load_sound("sounds/coin1.wav")
         self.jump_sound = arcade.load_sound("sounds/jump1.wav")
         self.game_over = arcade.load_sound("sounds/gameover1.wav")
+        self.gun_sound = arcade.sound.load_sound("sounds/laser1.wav")
+        self.hit_sound = arcade.sound.load_sound("sounds/laser4.wav")
 
     def setup(self, level):
         self.view_bottom = 0
@@ -63,11 +78,7 @@ class MyGame(arcade.Window):
         self.dont_touch_list = arcade.SpriteList()
         self.foreground_list = arcade.SpriteList()
         self.background_list = arcade.SpriteList()
-
-        # self.player_sprite = arcade.Sprite("images/player.png", CHARACTER_SCALING)
-        # self.player_sprite.center_x = PLAYER_START_X
-        # self.player_sprite.center_y = PLAYER_START_Y
-        # self.player_list.append(self.player_sprite)
+        self.bullet_list = arcade.SpriteList()
 
         self.player = Player()
 
@@ -129,6 +140,7 @@ class MyGame(arcade.Window):
         self.coin_list.draw()
         self.dont_touch_list.draw()
         try:
+            self.bullet_list.draw()
             self.player_list.draw()
         except:
             pass
@@ -139,6 +151,24 @@ class MyGame(arcade.Window):
                          10 + self.view_bottom,
                          arcade.csscolor.BLACK, 18)
 
+    def shoot_bullet(self):
+        arcade.sound.play_sound(self.gun_sound)
+        bullet = arcade.Sprite("images/items/bullet.png", BULLET_SCALE)
+        if self.player.state == FACE_LEFT:
+            bullet.angle = 90
+            bullet.change_x = -BULLET_SPEED
+            bullet.center_x = self.player.center_x
+            bullet.center_y = self.player.center_y
+            bullet.right = self.player.left
+        elif self.player.state == FACE_RIGHT:
+            bullet.angle = -90
+            bullet.change_x = BULLET_SPEED
+            bullet.center_x = self.player.center_x
+            bullet.center_y = self.player.center_y
+            bullet.left = self.player.right
+
+        self.bullet_list.append(bullet)
+
     def on_key_press(self, symbol: int, modifiers: int):
         if symbol == arcade.key.UP or symbol == arcade.key.W:
             if self.physics_engine.can_jump():
@@ -148,6 +178,8 @@ class MyGame(arcade.Window):
             self.player.change_x = -MOVEMENT_SPEED
         elif symbol == arcade.key.RIGHT or symbol == arcade.key.D:
             self.player.change_x = MOVEMENT_SPEED
+        elif symbol == arcade.key.SPACE:
+            self.shoot_bullet()
 
     def on_key_release(self, symbol: int, modifiers: int):
         if symbol == arcade.key.LEFT or symbol == arcade.key.A:
@@ -158,6 +190,21 @@ class MyGame(arcade.Window):
     def update(self, delta_time: float):
         self.physics_engine.update()
         self.player_list.update_animation()
+
+        self.bullet_list.update()
+        for bullet in self.bullet_list:
+            hit_list = arcade.check_for_collision_with_list(bullet,
+                                                            self.coin_list)
+            if len(hit_list) > 0:
+                bullet.kill()
+
+            for coin in hit_list:
+                coin.kill()
+                self.score += 1
+                arcade.play_sound(self.hit_sound)
+
+            if bullet.left > self.end_of_map + 200 or bullet.right < -250:
+                bullet.kill()
 
         coin_hitlist = arcade.check_for_collision_with_list(self.player,
                                                             self.coin_list)
