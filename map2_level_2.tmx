@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="30" height="10" tilewidth="128" tileheight="128" infinite="0" backgroundcolor="#96dee1" nextlayerid="7" nextobjectid="1">
- <tileset firstgid="1" name="my_tiles" tilewidth="128" tileheight="128" tilecount="166" columns="0">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="30" height="10" tilewidth="128" tileheight="128" infinite="0" backgroundcolor="#96dee1" nextlayerid="9" nextobjectid="1">
+ <tileset firstgid="1" name="my_tiles" tilewidth="430" tileheight="519" tilecount="177" columns="0">
   <grid orientation="orthogonal" width="1" height="1"/>
   <tile id="0">
    <image width="128" height="128" source="images/tiles/boxCrate.png"/>
@@ -500,6 +500,39 @@
   <tile id="165">
    <image width="128" height="128" source="images/items/star.png"/>
   </tile>
+  <tile id="166">
+   <image width="212" height="256" source="images/zombies/stand/0.png"/>
+  </tile>
+  <tile id="167">
+   <image width="430" height="519" source="images/zombies/walk/0.png"/>
+  </tile>
+  <tile id="168">
+   <image width="430" height="519" source="images/zombies/walk/1.png"/>
+  </tile>
+  <tile id="169">
+   <image width="430" height="519" source="images/zombies/walk/2.png"/>
+  </tile>
+  <tile id="170">
+   <image width="430" height="519" source="images/zombies/walk/3.png"/>
+  </tile>
+  <tile id="171">
+   <image width="430" height="519" source="images/zombies/walk/4.png"/>
+  </tile>
+  <tile id="172">
+   <image width="430" height="519" source="images/zombies/walk/5.png"/>
+  </tile>
+  <tile id="173">
+   <image width="430" height="519" source="images/zombies/walk/6.png"/>
+  </tile>
+  <tile id="174">
+   <image width="430" height="519" source="images/zombies/walk/7.png"/>
+  </tile>
+  <tile id="175">
+   <image width="430" height="519" source="images/zombies/walk/8.png"/>
+  </tile>
+  <tile id="176">
+   <image width="430" height="519" source="images/zombies/walk/9.png"/>
+  </tile>
  </tileset>
  <layer id="1" name="Platforms" width="30" height="10">
   <data encoding="base64" compression="zlib">
@@ -513,7 +546,17 @@
  </layer>
  <layer id="4" name="Foreground" width="30" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFIw1MHyB1o2AUUAoAlNABxg==
+   eJxjYBgFo2AUjIKhAQAEsAAB
+  </data>
+ </layer>
+ <layer id="7" name="Flags" width="30" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFowABphMhh08NMfKjYBSQCwDonwJd
+  </data>
+ </layer>
+ <layer id="8" name="Enemies" width="30" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFowA7WE5ldaNgFFAKAEfdAU8=
   </data>
  </layer>
  <layer id="6" name="Coins" width="30" height="10">

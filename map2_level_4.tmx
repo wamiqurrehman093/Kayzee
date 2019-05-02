@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="30" height="10" tilewidth="128" tileheight="128" infinite="0" backgroundcolor="#5dc1b9" nextlayerid="6" nextobjectid="1">
- <tileset firstgid="1" name="my_tiles" tilewidth="128" tileheight="128" tilecount="186" columns="0">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="30" height="10" tilewidth="128" tileheight="128" infinite="0" backgroundcolor="#5dc1b9" nextlayerid="8" nextobjectid="1">
+ <tileset firstgid="1" name="my_tiles" tilewidth="212" tileheight="256" tilecount="187" columns="0">
   <grid orientation="orthogonal" width="1" height="1"/>
   <tile id="0">
    <image width="128" height="128" source="images/tiles/boxCrate.png"/>
@@ -560,10 +560,23 @@
   <tile id="185">
    <image width="128" height="128" source="images/enemies/wormPink.png"/>
   </tile>
+  <tile id="186">
+   <image width="212" height="256" source="images/zombies/stand/0.png"/>
+  </tile>
  </tileset>
  <layer id="1" name="Platforms" width="30" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjYBgF6EAFiPWhWJUG8gMNQO4bjO4aykCPARHn6NiABPWkqlUggNEBtdQOFAYAN+UMyQ==
+   eJxjYBgF6EAFiPWhWJUG8oMBgNw4WN02FIEeAyLO0bEBCepJVatAAKMDaqkdKAwANsEMyQ==
+  </data>
+ </layer>
+ <layer id="6" name="Flags" width="30" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxjYBicYAYBMUrlR8EoIJQeCKUnYs0ZBdQDALkvBfE=
+  </data>
+ </layer>
+ <layer id="7" name="Enemies" width="30" height="10">
+  <data encoding="base64" compression="zlib">
+   eJxjYBjcYDeN5UfBKEAGxKaX0XQ1MAAA6L4DqA==
   </data>
  </layer>
  <layer id="2" name="Coins" width="30" height="10">
@@ -573,7 +586,7 @@
  </layer>
  <layer id="3" name="Foreground" width="30" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2D4gbl0tGs6He0a6QAA/OsBNQ==
+   eJxjYBgFo2D4gbkD7YBRQBMAACY3AJ4=
   </data>
  </layer>
  <layer id="4" name="Background" width="30" height="10">
