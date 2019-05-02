@@ -6,7 +6,7 @@ SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 650
 SCREEN_TITLE = "Kayzee"
 
-CHARACTER_SCALING = 0.2
+CHARACTER_SCALING = 0.22
 TILE_SCALING = 0.5
 COIN_SCALING = 0.5
 SPRITE_PIXEL_SIZE = 128
@@ -32,6 +32,9 @@ FACE_LEFT = 2
 FACE_UP = 3
 FACE_DOWN = 4
 
+ENEMY_SCALE = 0.5
+ENEMY_SPEED = 2
+
 
 class MyGame(arcade.Window):
     def __init__(self):
@@ -47,6 +50,8 @@ class MyGame(arcade.Window):
         self.dont_touch_list = None
         self.player_list = None
         self.bullet_list = None
+        self.enemy_list = None
+        self.flag_list = None
 
         self.player = None
         self.physics_engine = None
@@ -79,6 +84,8 @@ class MyGame(arcade.Window):
         self.foreground_list = arcade.SpriteList()
         self.background_list = arcade.SpriteList()
         self.bullet_list = arcade.SpriteList()
+        self.enemy_list = arcade.SpriteList()
+        self.flag_list = arcade.SpriteList()
 
         self.player = Player()
 
@@ -102,7 +109,7 @@ class MyGame(arcade.Window):
 
         self.player.center_x = SCREEN_WIDTH // 2
         self.player.center_y = SCREEN_HEIGHT // 2
-        self.player.scale = 0.2
+        self.player.scale = CHARACTER_SCALING
         self.player_list.append(self.player)
 
         platforms_layer_name = "Platforms"
@@ -110,6 +117,8 @@ class MyGame(arcade.Window):
         foreground_layer_name = "Foreground"
         background_layer_name = "Background"
         dont_touch_layer_name = "Don't Touch"
+        enemy_layer_name = "Enemies"
+        flag_layer_name = "Flags"
 
         map_name = f"map2_level_{level}.tmx"
         my_map = arcade.read_tiled_map(map_name, TILE_SCALING)
@@ -122,6 +131,13 @@ class MyGame(arcade.Window):
         self.wall_list = arcade.generate_sprites(my_map, platforms_layer_name, TILE_SCALING)
         self.coin_list = arcade.generate_sprites(my_map, coins_layer_name, TILE_SCALING)
         self.dont_touch_list = arcade.generate_sprites(my_map, dont_touch_layer_name, TILE_SCALING)
+        self.flag_list = arcade.generate_sprites(my_map, flag_layer_name, TILE_SCALING)
+        try:
+            self.enemy_list = arcade.generate_sprites(my_map, enemy_layer_name, ENEMY_SCALE)
+            for enemy in self.enemy_list:
+                enemy.change_x = -ENEMY_SPEED
+        except:
+            pass
 
         self.end_of_map = (len(map_array[0])-1) * GRID_PIXEL_SIZE
 
@@ -140,6 +156,7 @@ class MyGame(arcade.Window):
         self.coin_list.draw()
         self.dont_touch_list.draw()
         try:
+            self.enemy_list.draw()
             self.bullet_list.draw()
             self.player_list.draw()
         except:
@@ -195,6 +212,17 @@ class MyGame(arcade.Window):
         for bullet in self.bullet_list:
             hit_list = arcade.check_for_collision_with_list(bullet,
                                                             self.coin_list)
+            enemy_bullet_hitlist = arcade.check_for_collision_with_list(bullet,
+                                                                         self.enemy_list)
+
+            if len(enemy_bullet_hitlist) > 0:
+                bullet.kill()
+
+            for enemy in enemy_bullet_hitlist:
+                enemy.kill()
+                self.score += 100
+                arcade.play_sound(self.hit_sound)
+
             if len(hit_list) > 0:
                 bullet.kill()
 
@@ -206,12 +234,40 @@ class MyGame(arcade.Window):
             if bullet.left > self.end_of_map + 200 or bullet.right < -250:
                 bullet.kill()
 
+        for enemy in self.enemy_list:
+            enemy.center_x += enemy.change_x
+            enemy_wall_hitlist = arcade.check_for_collision_with_list(enemy, self.wall_list)
+            enemy_flag_hitlist = arcade.check_for_collision_with_list(enemy, self.flag_list)
+
+            if enemy_wall_hitlist:
+                for wall in enemy_wall_hitlist:
+                    enemy.bottom = wall.top
+            if enemy_flag_hitlist:
+                enemy.change_x = -enemy.change_x
+
+            if enemy.center_x < 0:
+                enemy.change_x = -enemy.change_x
+
+            # for foreground in self.foreground_list:
+            #     if get_distance_between_sprites(enemy, foreground) < 50:
+            #         enemy.change_x = -enemy.change_x
+            # for lava in self.dont_touch_list:
+            #     if get_distance_between_sprites(enemy, lava) < 50:
+            #         enemy.change_x = -enemy.change_x
+
         coin_hitlist = arcade.check_for_collision_with_list(self.player,
                                                             self.coin_list)
         for coin in coin_hitlist:
             coin.remove_from_sprite_lists()
             arcade.play_sound(self.collect_coin_sound)
             self.score += 1
+
+        enemy_player_hitlist = arcade.check_for_collision_with_list(self.player,
+                                                                    self.enemy_list)
+        if len(enemy_player_hitlist) > 0:
+            self.player.center_x = PLAYER_START_X
+            self.player.center_y = PLAYER_START_Y
+            arcade.play_sound(self.game_over)
 
         changed_viewport = False
 

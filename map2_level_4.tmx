@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="30" height="10" tilewidth="128" tileheight="128" infinite="0" backgroundcolor="#96dee1" nextlayerid="7" nextobjectid="1">
- <tileset firstgid="1" name="my_tiles" tilewidth="128" tileheight="128" tilecount="166" columns="0">
+<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="30" height="10" tilewidth="128" tileheight="128" infinite="0" backgroundcolor="#5dc1b9" nextlayerid="6" nextobjectid="1">
+ <tileset firstgid="1" name="my_tiles" tilewidth="128" tileheight="128" tilecount="186" columns="0">
   <grid orientation="orthogonal" width="1" height="1"/>
   <tile id="0">
    <image width="128" height="128" source="images/tiles/boxCrate.png"/>
@@ -438,92 +438,152 @@
    <image width="128" height="128" source="images/tiles/waterTop_low.png"/>
   </tile>
   <tile id="145">
-   <image width="128" height="128" source="images/items/coinBronze.png"/>
+   <image width="16" height="22" source="images/items/bullet.png"/>
   </tile>
   <tile id="146">
-   <image width="128" height="128" source="images/items/coinGold.png"/>
+   <image width="128" height="128" source="images/items/coinBronze.png"/>
   </tile>
   <tile id="147">
-   <image width="128" height="128" source="images/items/coinSilver.png"/>
+   <image width="128" height="128" source="images/items/coinGold.png"/>
   </tile>
   <tile id="148">
-   <image width="128" height="128" source="images/items/flagGreen_down.png"/>
+   <image width="128" height="128" source="images/items/coinSilver.png"/>
   </tile>
   <tile id="149">
-   <image width="128" height="128" source="images/items/flagGreen1.png"/>
+   <image width="128" height="128" source="images/items/flagGreen_down.png"/>
   </tile>
   <tile id="150">
-   <image width="128" height="128" source="images/items/flagGreen2.png"/>
+   <image width="128" height="128" source="images/items/flagGreen1.png"/>
   </tile>
   <tile id="151">
-   <image width="128" height="128" source="images/items/flagRed_down.png"/>
+   <image width="128" height="128" source="images/items/flagGreen2.png"/>
   </tile>
   <tile id="152">
-   <image width="128" height="128" source="images/items/flagRed1.png"/>
+   <image width="128" height="128" source="images/items/flagRed_down.png"/>
   </tile>
   <tile id="153">
-   <image width="128" height="128" source="images/items/flagRed2.png"/>
+   <image width="128" height="128" source="images/items/flagRed1.png"/>
   </tile>
   <tile id="154">
-   <image width="128" height="128" source="images/items/flagYellow_down.png"/>
+   <image width="128" height="128" source="images/items/flagRed2.png"/>
   </tile>
   <tile id="155">
-   <image width="128" height="128" source="images/items/flagYellow1.png"/>
+   <image width="128" height="128" source="images/items/flagYellow_down.png"/>
   </tile>
   <tile id="156">
-   <image width="128" height="128" source="images/items/flagYellow2.png"/>
+   <image width="128" height="128" source="images/items/flagYellow1.png"/>
   </tile>
   <tile id="157">
-   <image width="128" height="128" source="images/items/gemBlue.png"/>
+   <image width="128" height="128" source="images/items/flagYellow2.png"/>
   </tile>
   <tile id="158">
-   <image width="128" height="128" source="images/items/gemGreen.png"/>
+   <image width="128" height="128" source="images/items/gemBlue.png"/>
   </tile>
   <tile id="159">
-   <image width="128" height="128" source="images/items/gemRed.png"/>
+   <image width="128" height="128" source="images/items/gemGreen.png"/>
   </tile>
   <tile id="160">
-   <image width="128" height="128" source="images/items/gemYellow.png"/>
+   <image width="128" height="128" source="images/items/gemRed.png"/>
   </tile>
   <tile id="161">
-   <image width="128" height="128" source="images/items/keyBlue.png"/>
+   <image width="128" height="128" source="images/items/gemYellow.png"/>
   </tile>
   <tile id="162">
-   <image width="128" height="128" source="images/items/keyGreen.png"/>
+   <image width="128" height="128" source="images/items/keyBlue.png"/>
   </tile>
   <tile id="163">
-   <image width="128" height="128" source="images/items/keyRed.png"/>
+   <image width="128" height="128" source="images/items/keyGreen.png"/>
   </tile>
   <tile id="164">
-   <image width="128" height="128" source="images/items/keyYellow.png"/>
+   <image width="128" height="128" source="images/items/keyRed.png"/>
   </tile>
   <tile id="165">
+   <image width="128" height="128" source="images/items/keyYellow.png"/>
+  </tile>
+  <tile id="166">
    <image width="128" height="128" source="images/items/star.png"/>
+  </tile>
+  <tile id="167">
+   <image width="128" height="128" source="images/enemies/bee.png"/>
+  </tile>
+  <tile id="168">
+   <image width="128" height="128" source="images/enemies/fishGreen.png"/>
+  </tile>
+  <tile id="169">
+   <image width="128" height="128" source="images/enemies/fishPink.png"/>
+  </tile>
+  <tile id="170">
+   <image width="128" height="128" source="images/enemies/fly.png"/>
+  </tile>
+  <tile id="171">
+   <image width="128" height="128" source="images/enemies/frog.png"/>
+  </tile>
+  <tile id="172">
+   <image width="128" height="128" source="images/enemies/frog_move.png"/>
+  </tile>
+  <tile id="173">
+   <image width="128" height="128" source="images/enemies/ladybug.png"/>
+  </tile>
+  <tile id="174">
+   <image width="128" height="128" source="images/enemies/mouse.png"/>
+  </tile>
+  <tile id="175">
+   <image width="128" height="128" source="images/enemies/saw.png"/>
+  </tile>
+  <tile id="176">
+   <image width="128" height="128" source="images/enemies/sawHalf.png"/>
+  </tile>
+  <tile id="177">
+   <image width="128" height="128" source="images/enemies/slimeBlock.png"/>
+  </tile>
+  <tile id="178">
+   <image width="128" height="128" source="images/enemies/slimeBlue.png"/>
+  </tile>
+  <tile id="179">
+   <image width="128" height="128" source="images/enemies/slimeBlue_move.png"/>
+  </tile>
+  <tile id="180">
+   <image width="128" height="128" source="images/enemies/slimeGreen.png"/>
+  </tile>
+  <tile id="181">
+   <image width="128" height="128" source="images/enemies/slimePurple.png"/>
+  </tile>
+  <tile id="182">
+   <image width="128" height="128" source="images/enemies/wormGreen.png"/>
+  </tile>
+  <tile id="183">
+   <image width="128" height="128" source="images/enemies/wormGreen_dead.png"/>
+  </tile>
+  <tile id="184">
+   <image width="128" height="128" source="images/enemies/wormGreen_move.png"/>
+  </tile>
+  <tile id="185">
+   <image width="128" height="128" source="images/enemies/wormPink.png"/>
   </tile>
  </tileset>
  <layer id="1" name="Platforms" width="30" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo4D6QA+I9QlgAyL0EKMGWa0CkRgZUKKGVEyKvdSycyDtpTYGACOvEWk=
+   eJxjYBgF6EAFiPWhWJUG8gMNQO4bjO4aykCPARHn6NiABPWkqlUggNEBtdQOFAYAN+UMyQ==
   </data>
  </layer>
- <layer id="2" name="Don't Touch" width="30" height="10">
+ <layer id="2" name="Coins" width="30" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2DggAkSpicwRsKj9g4dAACOQQJo
+   eJxjYBgFQxlMHmgHDAFATBhNobkrSAeD0U0DDQBRkAJP
   </data>
  </layer>
- <layer id="4" name="Foreground" width="30" height="10">
+ <layer id="3" name="Foreground" width="30" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFIw1MHyB1o2AUUAoAlNABxg==
+   eJxjYBgFo2D4gbl0tGs6He0a6QAA/OsBNQ==
   </data>
  </layer>
- <layer id="6" name="Coins" width="30" height="10">
+ <layer id="4" name="Background" width="30" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFAwkmQTEhMAWKqWXmQNk7CgiDyVA8UuwlBQAAJ3MJLQ==
+   eJxjYBgFo2AUDCbQj4aHu72kAADTDQR5
   </data>
  </layer>
- <layer id="5" name="Background" width="30" height="10">
+ <layer id="5" name="Don't Touch" width="30" height="10">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2Bwg34kPGrv8LOXFAAA7DgGtQ==
+   eJxjYBgFo2AU0BqYoGF6AWM0PNQBAKtXAZ0=
   </data>
  </layer>
 </map>
