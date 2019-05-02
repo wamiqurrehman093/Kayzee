@@ -1,6 +1,7 @@
 import os
 import arcade
 from player import Player, get_distance_between_sprites
+from enemy import Enemy
 
 SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 650
@@ -33,7 +34,7 @@ FACE_UP = 3
 FACE_DOWN = 4
 
 ENEMY_SCALE = 0.5
-ENEMY_SPEED = 2
+ENEMY_SPEED = 4
 
 
 class MyGame(arcade.Window):
@@ -107,8 +108,8 @@ class MyGame(arcade.Window):
 
         self.player.texture_change_distance = 30
 
-        self.player.center_x = SCREEN_WIDTH // 2
-        self.player.center_y = SCREEN_HEIGHT // 2
+        self.player.center_x = PLAYER_START_X
+        self.player.center_y = PLAYER_START_Y
         self.player.scale = CHARACTER_SCALING
         self.player_list.append(self.player)
 
@@ -133,9 +134,34 @@ class MyGame(arcade.Window):
         self.dont_touch_list = arcade.generate_sprites(my_map, dont_touch_layer_name, TILE_SCALING)
         self.flag_list = arcade.generate_sprites(my_map, flag_layer_name, TILE_SCALING)
         try:
-            self.enemy_list = arcade.generate_sprites(my_map, enemy_layer_name, ENEMY_SCALE)
-            for enemy in self.enemy_list:
+            e_list = arcade.generate_sprites(my_map, enemy_layer_name, ENEMY_SCALE)
+            for e in e_list:
+                enemy = Enemy()
+
+                enemy.stand_right_textures = []
+                enemy.stand_left_textures = []
+                enemy.walk_right_textures = []
+                enemy.walk_left_textures = []
+
+                enemy.stand_right_textures.append(arcade.load_texture("images/zombies/stand/0.png",
+                                                                      scale=ENEMY_SCALE))
+                enemy.stand_left_textures.append(arcade.load_texture("images/zombies/stand/0.png",
+                                                                     scale=ENEMY_SCALE, mirrored=True))
+                for i in range(10):
+                    enemy.walk_right_textures.append(
+                        arcade.load_texture("images/zombies/walk/" + str(i) + ".png",
+                                            scale=ENEMY_SCALE))
+                for i in range(10):
+                    enemy.walk_left_textures.append(arcade.load_texture("images/zombies/walk/" + str(i) + ".png",
+                                                                        scale=ENEMY_SCALE, mirrored=True))
+
+                enemy.texture_change_distance = 20
+
+                enemy.center_x = e.center_x
+                enemy.center_y = e.center_y
+                enemy.scale = ENEMY_SCALE
                 enemy.change_x = -ENEMY_SPEED
+                self.enemy_list.append(enemy)
         except:
             pass
 
@@ -165,6 +191,10 @@ class MyGame(arcade.Window):
 
         score_text = f"Score: {self.score}"
         arcade.draw_text(score_text, 10 + self.view_left,
+                         10 + self.view_bottom,
+                         arcade.csscolor.BLACK, 18)
+        level_text = f"Level: {self.level}"
+        arcade.draw_text(level_text, 150 + self.view_left,
                          10 + self.view_bottom,
                          arcade.csscolor.BLACK, 18)
 
@@ -207,11 +237,11 @@ class MyGame(arcade.Window):
     def update(self, delta_time: float):
         self.physics_engine.update()
         self.player_list.update_animation()
-
+        self.enemy_list.update_animation()
         self.bullet_list.update()
         for bullet in self.bullet_list:
-            hit_list = arcade.check_for_collision_with_list(bullet,
-                                                            self.coin_list)
+            # hit_list = arcade.check_for_collision_with_list(bullet,
+            #                                                 self.coin_list)
             enemy_bullet_hitlist = arcade.check_for_collision_with_list(bullet,
                                                                          self.enemy_list)
 
@@ -223,16 +253,16 @@ class MyGame(arcade.Window):
                 self.score += 100
                 arcade.play_sound(self.hit_sound)
 
-            if len(hit_list) > 0:
-                bullet.kill()
-
-            for coin in hit_list:
-                coin.kill()
-                self.score += 1
-                arcade.play_sound(self.hit_sound)
-
-            if bullet.left > self.end_of_map + 200 or bullet.right < -250:
-                bullet.kill()
+            # if len(hit_list) > 0:
+            #     bullet.kill()
+            #
+            # for coin in hit_list:
+            #     coin.kill()
+            #     self.score += 1
+            #     arcade.play_sound(self.hit_sound)
+            #
+            # if bullet.left > self.end_of_map + 200 or bullet.right < -250:
+            #     bullet.kill()
 
         for enemy in self.enemy_list:
             enemy.center_x += enemy.change_x
