@@ -37,6 +37,68 @@ ENEMY_SCALE = 0.5
 ENEMY_SPEED = 4
 
 
+class InputHandler:
+    def __init__(self, button_a, button_s, button_left, button_right):
+        self.buttonA = button_a
+        self.buttonS = button_s
+        self.buttonLEFT = button_left
+        self.buttonRIGHT = button_right
+
+    def swap(self):
+        temp_button = self.buttonA
+        self.buttonA = self.buttonS
+        self.buttonS = temp_button
+
+    def handle_input(self, key):
+        if key == arcade.key.A:
+            self.buttonA.execute()
+        elif key == arcade.key.S:
+            self.buttonS.execute()
+        elif key == arcade.key.LEFT:
+            self.buttonLEFT.execute()
+        elif key == arcade.key.RIGHT:
+            self.buttonRIGHT.execute()
+        elif key == arcade.key.T:
+            self.swap()
+
+
+class Command:
+    def execute(self):
+        pass
+
+
+class JumpCommand(Command):
+    def __init__(self, player):
+        self.player = player
+
+    def execute(self):
+        self.player.jump()
+
+
+class ShootCommand(Command):
+    def __init__(self, player):
+        self.player = player
+
+    def execute(self):
+        self.player.shoot_bullet()
+
+
+class WalkLeftCommand(Command):
+    def __init__(self, player):
+        self.player = player
+
+    def execute(self):
+        self.player.walk_left()
+
+
+class WalkRightCommand(Command):
+    def __init__(self, player):
+        self.player = player
+
+    def execute(self):
+        self.player.walk_right()
+
+
 class MyGame(arcade.Window):
     def __init__(self):
         super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
@@ -71,6 +133,12 @@ class MyGame(arcade.Window):
         self.game_over = arcade.load_sound("sounds/gameover1.wav")
         self.gun_sound = arcade.sound.load_sound("sounds/laser1.wav")
         self.hit_sound = arcade.sound.load_sound("sounds/laser4.wav")
+
+        self.input_handler = None
+        self.jump_command = None
+        self.shoot_command = None
+        self.walk_left_command = None
+        self.walk_right_command = None
 
     def setup(self, level):
         self.view_bottom = 0
@@ -111,7 +179,6 @@ class MyGame(arcade.Window):
         self.player.center_x = PLAYER_START_X
         self.player.center_y = PLAYER_START_Y
         self.player.scale = CHARACTER_SCALING
-        self.player_list.append(self.player)
 
         platforms_layer_name = "Platforms"
         coins_layer_name = "Coins"
@@ -174,6 +241,14 @@ class MyGame(arcade.Window):
                                                              self.wall_list,
                                                              GRAVITY)
 
+        self.player.physics_engine = self.physics_engine
+        self.player_list.append(self.player)
+        self.jump_command = JumpCommand(self.player)
+        self.shoot_command = ShootCommand(self.player)
+        self.walk_left_command = WalkLeftCommand(self.player)
+        self.walk_right_command = WalkRightCommand(self.player)
+        self.input_handler = InputHandler(self.jump_command, self.shoot_command, self.walk_left_command, self.walk_right_command)
+
     def on_draw(self):
         arcade.start_render()
         self.wall_list.draw()
@@ -217,16 +292,17 @@ class MyGame(arcade.Window):
         self.bullet_list.append(bullet)
 
     def on_key_press(self, symbol: int, modifiers: int):
-        if symbol == arcade.key.UP or symbol == arcade.key.W:
-            if self.physics_engine.can_jump():
-                self.player.change_y = JUMP_SPEED
-                arcade.play_sound(self.jump_sound)
-        elif symbol == arcade.key.LEFT or symbol == arcade.key.A:
-            self.player.change_x = -MOVEMENT_SPEED
-        elif symbol == arcade.key.RIGHT or symbol == arcade.key.D:
-            self.player.change_x = MOVEMENT_SPEED
-        elif symbol == arcade.key.SPACE:
-            self.shoot_bullet()
+        self.input_handler.handle_input(symbol)
+        # if symbol == arcade.key.UP or symbol == arcade.key.W:
+        #     if self.physics_engine.can_jump():
+        #         self.player.change_y = JUMP_SPEED
+        #         arcade.play_sound(self.jump_sound)
+        # elif symbol == arcade.key.LEFT or symbol == arcade.key.A:
+        #     self.player.change_x = -MOVEMENT_SPEED
+        # elif symbol == arcade.key.RIGHT or symbol == arcade.key.D:
+        #     self.player.change_x = MOVEMENT_SPEED
+        # elif symbol == arcade.key.SPACE:
+        #     self.shoot_bullet()
 
     def on_key_release(self, symbol: int, modifiers: int):
         if symbol == arcade.key.LEFT or symbol == arcade.key.A:
@@ -238,6 +314,7 @@ class MyGame(arcade.Window):
         self.physics_engine.update()
         self.player_list.update_animation()
         self.enemy_list.update_animation()
+        self.bullet_list = self.player.bullet_list
         self.bullet_list.update()
         for bullet in self.bullet_list:
             # hit_list = arcade.check_for_collision_with_list(bullet,

@@ -1,6 +1,11 @@
 import arcade
 from arcade.sprite import *
 
+JUMP_SPEED = 20
+MOVEMENT_SPEED = 8
+BULLET_SCALE = 0.8
+BULLET_SPEED = 8
+
 
 class Player(Sprite):
     def __init__(self, scale: float = 1,
@@ -26,6 +31,41 @@ class Player(Sprite):
         self.texture_change_distance = 20
         self.last_texture_change_center_x = 0
         self.last_texture_change_center_y = 0
+
+        self.physics_engine = None
+        self.jump_sound = arcade.load_sound("sounds/jump1.wav")
+        self.gun_sound = arcade.sound.load_sound("sounds/laser1.wav")
+
+        self.bullet_list = arcade.SpriteList()
+
+    def walk_left(self):
+        self.change_x = -MOVEMENT_SPEED
+
+    def walk_right(self):
+        self.change_x = MOVEMENT_SPEED
+
+    def jump(self):
+        if self.physics_engine.can_jump():
+            self.change_y = JUMP_SPEED
+            arcade.play_sound(self.jump_sound)
+
+    def shoot_bullet(self):
+        arcade.sound.play_sound(self.gun_sound)
+        bullet = arcade.Sprite("images/items/bullet.png", BULLET_SCALE)
+        if self.state == FACE_LEFT:
+            bullet.angle = 90
+            bullet.change_x = -BULLET_SPEED
+            bullet.center_x = self.center_x
+            bullet.center_y = self.center_y
+            bullet.right = self.left
+        elif self.state == FACE_RIGHT:
+            bullet.angle = -90
+            bullet.change_x = BULLET_SPEED
+            bullet.center_x = self.center_x
+            bullet.center_y = self.center_y
+            bullet.left = self.right
+
+        self.bullet_list.append(bullet)
 
     def shoot(self):
         if self.is_shooting and self.state == FACE_RIGHT:
