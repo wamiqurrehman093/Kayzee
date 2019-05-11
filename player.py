@@ -9,16 +9,47 @@ class Player(Sprite):
         super().__init__(scale=scale, image_x=image_x, image_y=image_y,
                          center_x=center_x, center_y=center_y)
         self.state = FACE_RIGHT
+
         self.stand_right_textures = None
         self.stand_left_textures = None
+
         self.walk_left_textures = None
         self.walk_right_textures = None
         self.walk_up_textures = None
         self.walk_down_textures = None
+
+        self.shoot_right_textures = None
+        self.shoot_left_textures = None
+        self.is_shooting = None
+
         self.cur_texture_index = 0
         self.texture_change_distance = 20
         self.last_texture_change_center_x = 0
         self.last_texture_change_center_y = 0
+
+    def shoot(self):
+        if self.is_shooting and self.state == FACE_RIGHT:
+            texture_list = self.walk_right_textures
+            if texture_list is None or len(texture_list) == 0:
+                raise RuntimeError("update_animation was called on a sprite that doesn't have a list of "
+                                   "walk right textures.")
+        elif self.is_shooting and self.state == FACE_LEFT:
+            texture_list = self.walk_left_textures
+            if texture_list is None or len(texture_list) == 0:
+                raise RuntimeError("update_animation was called on a sprite that doesn't have a "
+                                   "list of walk left textures.")
+
+            self.cur_texture_index += 1
+            if self.cur_texture_index >= len(texture_list):
+                self.cur_texture_index = 0
+
+            self.texture = texture_list[self.cur_texture_index]
+
+        if self._texture is None:
+            print("Error, no texture set")
+        else:
+            self.width = self._texture.width * self.scale
+            self.height = self._texture.height * self.scale
 
     def update_animation(self):
         x1 = self.center_x
