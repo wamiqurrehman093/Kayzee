@@ -1,10 +1,6 @@
 import arcade
 from arcade.sprite import *
-
-JUMP_SPEED = 20
-MOVEMENT_SPEED = 8
-BULLET_SCALE = 0.8
-BULLET_SPEED = 8
+from variables import *
 
 
 class Player(Sprite):
@@ -37,6 +33,9 @@ class Player(Sprite):
         self.gun_sound = arcade.sound.load_sound("sounds/laser1.wav")
 
         self.bullet_list = arcade.SpriteList()
+
+    def stop_walking(self):
+        self.change_x = 0
 
     def walk_left(self):
         self.change_x = -MOVEMENT_SPEED
