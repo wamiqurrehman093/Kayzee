@@ -20,6 +20,10 @@ class MyGame(arcade.Window):
         self.init_commands()
         self.background = None
         self.font_color = None
+        self.bg_music = None
+        self.prev_music = None
+        self.bg_music_length = None
+        self.total_time = 0.0
 
     def set_file_path(self):
         file_path = os.path.dirname(os.path.abspath(__file__))
@@ -78,6 +82,26 @@ class MyGame(arcade.Window):
         self.font_color = arcade.color.WHITE
         if self.level == 1 or self.level == 3 or self.level == 6:
             self.font_color = arcade.color.BLACK
+        self.prev_music = self.bg_music
+        self.bg_music = arcade.load_sound(f"music/music_{self.level}.mp3")
+        if self.prev_music is not None:
+            if not arcade.is_queued(self.prev_music):
+                arcade.play_sound(self.bg_music)
+        else:
+            arcade.play_sound(self.bg_music)
+        if self.level == 1:
+            self.bg_music_length = 34
+        elif self.level == 2:
+            self.bg_music_length = 32
+        elif self.level == 3:
+            self.bg_music_length = 53
+        elif self.level == 4:
+            self.bg_music_length = 39
+        elif self.level == 5:
+            self.bg_music_length = 27
+        elif self.level == 6:
+            self.bg_music_length = 42
+        self.total_time = 0.0
         self.background = arcade.load_texture(f"images/backgrounds/BG_{self.level}.png")
 
     def setup_game_mechanics(self):
@@ -265,6 +289,14 @@ class MyGame(arcade.Window):
             command.execute(self.player)
 
     def update(self, delta_time: float):
+        # self.total_time += delta_time
+        # seconds = int(self.total_time) % 60
+        # if seconds > self.bg_music_length:
+        #     arcade.play_sound(self.bg_music)
+        #     self.total_time = 0.0
+
+        if not arcade.is_queued(self.bg_music) and not arcade.is_queued(self.prev_music):
+            arcade.play_sound(self.bg_music)
         draw_start_time = timeit.default_timer()
         self.physics_engine.update()
         changed_viewport = self.update_player()
@@ -315,6 +347,8 @@ class MyGame(arcade.Window):
         if self.player.center_x >= self.end_of_map:
             print("Advance ****")
             self.level += 1
+            # if self.bg_music is not None:
+            #     arcade.stop_sound(self.bg_music)
             self.setup(self.level)
 
             self.view_left = 0
